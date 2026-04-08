@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>逢いカメラ Demo (Web)</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div>
+        <h1>逢いカメラ</h1>
+        <p class="subtitle">学内交流向け 顔マッチ + プロフィール表示 (デモ)</p>
+      </div>
+      <div class="badge">Web Demo</div>
+    </header>
+
+    <main class="grid grid-2">
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">撮影/アップロード</p>
+            <h2>ツーショットを取り込む</h2>
+            <p class="muted">カメラ撮影または画像アップロードでマッチします（現在はダミー推論）。</p>
+          </div>
+          <div class="btn-row">
+            <button class="btn ghost" id="cameraToggle">Webカメラ</button>
+            <label class="btn" for="photoInput">画像を選ぶ</label>
+            <input id="photoInput" type="file" accept="image/*" hidden />
+          </div>
+        </div>
+        <div class="preview" id="preview">
+          <div class="placeholder">カメラをONにするか画像を選択してください</div>
+          <video id="video" autoplay playsinline class="hidden"></video>
+          <canvas id="canvas" class="hidden"></canvas>
+          <button id="captureBtn" class="floating-btn hidden">シャッター</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">あなたのプロフィール</p>
+            <h2>先輩プロフィール登録</h2>
+            <p class="muted">上級生であるあなた自身の情報を登録します。マッチ結果は新入生リストが表示されます。</p>
+          </div>
+        </div>
+        <form id="profileForm" class="profile-form">
+          <label>名前<input name="name" placeholder="例: 田中 花" required /></label>
+          <label>学部・学科<input name="department" placeholder="例: 理工学部 情報工" /></label>
+          <label>タグ（カンマ区切り）<input name="tags" placeholder="音楽,写真,バスケ" /></label>
+          <label>一言紹介<textarea name="intro" rows="3" placeholder="自己紹介や話題のタネ"></textarea></label>
+          <button type="submit" class="btn full">登録する</button>
+        </form>
+      </section>
+    </main>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">マッチ結果</p>
+          <h2>新入生候補</h2>
+          <p class="muted">現在はダミーデータで類似度を表示しています。DB接続後に実データへ置換予定。</p>
+        </div>
+      </div>
+      <ul class="candidate-list" id="candidateList">
+        <li class="muted">まだ結果がありません</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">アーカイブ</p>
+          <h2>撮影履歴</h2>
+          <p class="muted">撮影した画像とマッチ結果をローカルで保持します（リロードで消えます）。</p>
+        </div>
+        <button id="archiveClear" class="btn ghost small">クリア</button>
+      </div>
+      <div id="archiveList" class="archive-list muted">まだありません</div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <button id="modalClose" class="modal-close">×</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
